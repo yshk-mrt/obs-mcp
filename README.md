@@ -1,5 +1,9 @@
 # Presentation Buddy - AI-Powered Stream Production Assistant
 
+**Project Links:**
+* [DevPost Project Page](https://devpost.com/software/product-demo-agent)
+* [Demo Video on YouTube](https://youtu.be/5w-XjIMo1b0)
+
 Presentation Buddy is an OBS control system that uses Claude AI to automate streaming production, allowing solo creators to focus on content delivery rather than technical management.
 
 ## Technical Overview
