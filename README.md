@@ -80,6 +80,78 @@ All of this runs locally, so there's no cloud delay or fancy hardware.
 5. Connect your Claude AI instance to the MCP server
 6. Start your OBS session and let Presentation Buddy take control
 
+## Claude MCP Configuration
+
+To set up Claude with Presentation Buddy, you'll need to configure the MCP (Machine Control Protocol) settings in Cursor or another Claude interface. This allows Claude to control OBS through our server.
+
+### Claude MCP Config
+
+Add the following configuration to your Claude settings:
+
+```json
+{
+  "mcpServers": {
+    "obs-mcp-ts": {
+      "type": "stdio",
+      "command": "/path/to/your/node",
+      "args": [
+        "/path/to/obs-mcp-server-ts/build/index.js"
+      ],
+      "toolNamespaces": ["obs-mcp-ts"]
+    },
+    "tts-mcp": {
+      "command": "npx",
+      "args": [
+        "-p", "tts-mcp",
+        "tts-mcp-server",
+        "--voice", "nova",
+        "--model", "gpt-4o-mini-tts"
+      ],
+      "env": {
+        "OPENAI_API_KEY": "Your-API-Key"
+      }
+    }
+  },
+
+  "toolPermissions": {
+    "obs-mcp-ts": true,
+    "tts-mcp": true
+  }
+}
+```
+
+Replace the paths with your actual Node.js and server paths:
+- `/path/to/your/node` - Path to your Node.js executable (e.g., `/Users/username/.nvm/versions/node/v20.17.0/bin/node`)
+- `/path/to/obs-mcp-server-ts/build/index.js` - Path to the built server JavaScript file
+
+For the TTS-MCP configuration, be sure to:
+1. Insert your actual OpenAI API key
+2. Choose your preferred voice (default: nova)
+3. Select the appropriate model for text-to-speech (default: gpt-4o-mini-tts)
+
+### OBS Setup
+
+1. Install OBS Studio (version 28+ recommended)
+2. Enable the WebSocket server in OBS:
+   - Go to Tools → WebSocket Server Settings
+   - Enable the WebSocket server
+   - Set a port (default: 4455)
+   - Configure authentication if needed
+
+3. Create your scenes in OBS:
+   - Main Camera
+   - Presentation/Slides
+   - Picture-in-Picture
+   - Any additional scenes you want Claude to control
+
+### Testing the Connection
+
+Once configured:
+1. Start OBS Studio
+2. Run the MCP server (`npm start`)
+3. Open Claude with MCP configured
+4. Test a simple command like switching scenes
+
 ## License
 
 This project is available under the MIT License.
