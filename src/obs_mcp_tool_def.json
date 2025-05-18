@@ -1,0 +1,431 @@
+{
+  "name": "obs-mcp-ts",
+  "version": "0.1.0",
+  "description": "MCP Server for controlling OBS Studio (TypeScript)",
+  "actions": [
+    {
+      "name": "SwitchScene",
+      "description": "Switches the current OBS program scene.",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "scene": { "type": "string", "description": "Name of the scene to switch to." }
+        },
+        "required": ["scene"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "StartStream",
+      "description": "Starts the OBS stream.",
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "StopStream",
+      "description": "Stops the OBS stream.",
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "StartRecording",
+      "description": "Starts the OBS recording.",
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "StopRecording",
+      "description": "Stops the OBS recording.",
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "SetSourceVisibility",
+      "description": "Sets the visibility of a source in a specific scene.",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "scene": { "type": "string", "description": "Name of the scene containing the source." },
+          "source": { "type": "string", "description": "Name of the source." },
+          "visible": { "type": "boolean", "description": "True to make visible, false to hide." }
+        },
+        "required": ["scene", "source", "visible"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "GetSceneList",
+      "description": "Gets the list of available OBS scenes.",
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "currentProgramSceneName": { "type": "string" },
+          "scenes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sceneName": { "type": "string" },
+                "sceneIndex": { "type": "integer" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "SetTextContent",
+      "description": "Sets the text content of a text source.",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "source": { "type": "string", "description": "Name of the text source." },
+          "text": { "type": "string", "description": "The new text content to set." }
+        },
+        "required": ["source", "text"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "SetAudioMute",
+      "description": "Mutes or unmutes an audio source.",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "source": { "type": "string", "description": "Name of the audio source." },
+          "mute": { "type": "boolean", "description": "True to mute, false to unmute." }
+        },
+        "required": ["source", "mute"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "SetAudioVolume",
+      "description": "Sets the volume of an audio source.",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "source": { "type": "string", "description": "Name of the audio source." },
+          "volume": { "type": "number", "description": "Volume multiplier (0.0 to 1.0)." }
+        },
+        "required": ["source", "volume"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "SetSourcePosition",
+      "description": "Sets the position of a source in a scene.",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "scene": { "type": "string", "description": "Name of the scene containing the source." },
+          "source": { "type": "string", "description": "Name of the source." },
+          "x": { "type": "number", "description": "X position in pixels." },
+          "y": { "type": "number", "description": "Y position in pixels." }
+        },
+        "required": ["scene", "source", "x", "y"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "SetSourceScale",
+      "description": "Sets the scale of a source in a scene.",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "scene": { "type": "string", "description": "Name of the scene containing the source." },
+          "source": { "type": "string", "description": "Name of the source." },
+          "scaleX": { "type": "number", "description": "Scale factor on X axis." },
+          "scaleY": { "type": "number", "description": "Scale factor on Y axis." }
+        },
+        "required": ["scene", "source", "scaleX", "scaleY"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "TakeSourceScreenshot",
+      "description": "Takes a screenshot of the specified source.",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "source": { "type": "string", "description": "Name of the source to capture." },
+          "filePath": { "type": "string", "description": "File path where the screenshot should be saved (optional)." },
+          "width": { "type": "integer", "description": "Optional width to resize the screenshot to." },
+          "height": { "type": "integer", "description": "Optional height to resize the screenshot to." },
+          "compressionQuality": { "type": "integer", "description": "Optional compression quality. For PNG (default format): 0-9 (OBS default is 4). For JPEG: 0-100 (OBS default is typically around 85-90). For WebP: 0-100. Use -1 for OBS default for the chosen format." },
+          "imageFormat": { "type": "string", "description": "Optional image format (e.g., \"png\", \"jpeg\", \"webp\"). Defaults to \"png\"." }
+        },
+        "required": ["source"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "imageData": { "type": "string", "description": "Base64-encoded image data." },
+          "sourceName": { "type": "string" },
+          "imageWidth": { "type": "integer" },
+          "imageHeight": { "type": "integer" }
+        }
+      }
+    },
+    {
+      "name": "SetTransitionSettings",
+      "description": "Sets the current scene transition type and duration. 用途: シーン切り替え時のエフェクトをカスタマイズ",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "transitionName": { "type": "string", "description": "Name of the transition to set (e.g., 'Fade', 'Cut', 'Slide')." },
+          "transitionDuration": { "type": "number", "description": "Duration of the transition in milliseconds." }
+        },
+        "required": ["transitionName", "transitionDuration"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "TriggerStudioModeTransition",
+      "description": "Triggers the transition from Preview to Program in Studio Mode. 用途: シーンの準備と切り替えをスムーズに行う",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "PlayPauseMedia",
+      "description": "Controls playback of a media source (play, pause, stop, restart). 用途: 動画クリップやオーディオの再生制御",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "sourceName": { "type": "string", "description": "Name of the media source." },
+          "mediaAction": { 
+            "type": "string", 
+            "description": "Action to perform: PLAY, PAUSE, RESTART, STOP, NEXT, PREVIOUS.",
+            "enum": ["PLAY", "PAUSE", "RESTART", "STOP", "NEXT", "PREVIOUS"]
+          }
+        },
+        "required": ["sourceName", "mediaAction"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "SetMediaTime",
+      "description": "Sets the current playback time of a media source. 用途: 特定シーンへのジャンプ、リプレイの開始位置設定",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "sourceName": { "type": "string", "description": "Name of the media source." },
+          "mediaTime": { "type": "number", "description": "Playback time in milliseconds." }
+        },
+        "required": ["sourceName", "mediaTime"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "SaveReplayBuffer",
+      "description": "Saves the content of the replay buffer. 用途: ゲームのハイライト瞬間を即座に保存",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "SaveReplayBufferAndAdd",
+      "description": "Saves the replay buffer and adds it as a media source to a scene. 用途: リプレイをすぐにシーンに表示",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "sceneName": { "type": "string", "description": "Name of the scene to add the replay to." },
+          "sourceName": { "type": "string", "description": "Name for the new media source." },
+          "replayFolder": { "type": "string", "description": "Path to the folder where replay files are saved (optional)." }
+        },
+        "required": ["sceneName", "sourceName"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "filePath": { "type": "string" },
+          "sceneItemId": { "type": "number" }
+        }
+      }
+    },
+    {
+      "name": "CreateSource",
+      "description": "Creates a new source in a specified scene. 用途: リプレイ映像用の新しいメディアソースを生成",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "sceneName": { "type": "string", "description": "Name of the scene to add the source to." },
+          "sourceName": { "type": "string", "description": "Name for the new source." },
+          "sourceKind": { "type": "string", "description": "Kind of the source (e.g., 'ffmpeg_source', 'image_source', 'text_gdiplus_v2')." },
+          "sourceSettings": { 
+            "type": "object", 
+            "description": "Settings for the new source (e.g., {\"local_file\": \"/path/to/video.mp4\"} or {\"file\": \"/path/to/image.png\"}).",
+            "additionalProperties": true
+          },
+          "setVisible": { "type": "boolean", "description": "Whether the source should be visible after creation (default: true).", "default": true }
+        },
+        "required": ["sceneName", "sourceName", "sourceKind", "sourceSettings"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "sceneItemId": { "type": "number", "description": "Numeric ID of the new scene item."}
+        }
+      }
+    },
+    {
+      "name": "SetShaderFilter",
+      "description": "Sets parameters for a shader filter on a source. 用途: シェーダーエフェクトをリアルタイムで変更する",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "sourceName": { "type": "string", "description": "Name of the source with the shader filter." },
+          "filterName": { "type": "string", "description": "Name of the shader filter." },
+          "shaderCode": { "type": "string", "description": "GLSL shader code to set (optional)." },
+          "shaderParameters": { 
+            "type": "object", 
+            "description": "Key-value pairs of shader parameters to update.",
+            "additionalProperties": true
+          }
+        },
+        "required": ["sourceName", "filterName"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "SetLutFilter",
+      "description": "Sets parameters for a LUT filter on a source. 用途: LUTフィルターの適用量やファイルパスをリアルタイムで変更する",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "sourceName": { "type": "string", "description": "Name of the source with the LUT filter." },
+          "filterName": { "type": "string", "description": "Name of the LUT filter." },
+          "amount": { "type": "number", "description": "Blending amount (0.0-1.0)." },
+          "path": { "type": "string", "description": "Path to the LUT file (.png/.cube)." }
+        },
+        "required": ["sourceName", "filterName"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" }
+        }
+      }
+    },
+    {
+      "name": "GetSceneItemList",
+      "description": "Gets the list of scene items (sources) in a specified scene.",
+      "requestDataSchema": {
+        "type": "object",
+        "properties": {
+          "sceneName": { "type": "string", "description": "Name of the scene to get items from." }
+        },
+        "required": ["sceneName"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "sceneItems": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sceneItemId": { "type": "integer" },
+                "sourceName": { "type": "string" },
+                "sourceType": { "type": "string" },
+                "inputKind": { "type": "string" },
+                "isGroup": { "type": "boolean" },
+                "sceneItemIndex": { "type": "integer" },
+                "sceneItemEnabled": { "type": "boolean" },
+                "sceneItemLocked": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+} 

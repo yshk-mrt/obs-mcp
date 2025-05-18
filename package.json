@@ -1,0 +1,28 @@
+{
+  "name": "obs-mcp-server-ts",
+  "version": "1.0.0",
+  "description": "MCP Server for OBS Control (TypeScript)",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc && cp src/*.json build/",
+    "start": "node build/index.js",
+    "dev": "tsc -w & node --watch build/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "obs",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "ws": "^8.18.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.12",
+    "@types/ws": "^8.5.11",
+    "typescript": "^5.5.4"
+  }
+} 
